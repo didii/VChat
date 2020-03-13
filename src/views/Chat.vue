@@ -30,5 +30,14 @@ export default defineComponent({
         Messages,
         Name,
     },
-})
+    setup() {
+        const store = useStore();
+        return {
+            ...store,
+            ...useMessages(function (message) {
+                store.state.value.messages.push(message);
+            }),
+        };
+    }
+});
 </script>
