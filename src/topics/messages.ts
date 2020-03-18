@@ -1,29 +1,37 @@
 import { IMessage } from '@/topics/store';
+import { onUnmounted, ref } from '@vue/composition-api';
 
-export function useMessages(onMessageReceived: (this: WebSocket, message: IMessage) => void, onOpen?: (this: WebSocket, ev: Event) => void) {
+export enum ConnectionState {
+    Closed,
+    Open,
+}
+
+export function useMessages(onMessageReceived: (message: IMessage) => void) {
+    const connectionState = ref(ConnectionState.Closed);
+
     // Create websocket and listen to events
     const wss = new WebSocket('wss://echo.websocket.org');
     wss.addEventListener('open', function (ev) {
         console.log('Websocket initialized');
-        if (onOpen) {
-            onOpen.call(this, ev);
-        }
+        connectionState.value = ConnectionState.Open;
     });
     wss.addEventListener('close', function (ev) {
         console.log('Websocket closed');
+        connectionState.value = ConnectionState.Closed;
     });
     wss.addEventListener('message', function (ev) {
         console.log('Message received:', ev);
         const data = JSON.parse(ev.data) as IMessage;
-        onMessageReceived.call(this, data);
+        onMessageReceived(data);
     });
 
+    // Close the connection when the component goes out of scope
+    onUnmounted(() => wss.close());
+
     return {
+        connectionState,
         sendMessage: (message: IMessage) => {
             wss.send(JSON.stringify(message));
-        },
-        onBeforeDestroy: () => {
-            wss.close();
         },
     };
 }
