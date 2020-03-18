@@ -9,6 +9,9 @@ export function useMessages(onMessageReceived: (this: WebSocket, message: IMessa
             onOpen.call(this, ev);
         }
     });
+    wss.addEventListener('close', function (ev) {
+        console.log('Websocket closed');
+    });
     wss.addEventListener('message', function (ev) {
         console.log('Message received:', ev);
         const data = JSON.parse(ev.data) as IMessage;
@@ -19,7 +22,7 @@ export function useMessages(onMessageReceived: (this: WebSocket, message: IMessa
         sendMessage: (message: IMessage) => {
             wss.send(JSON.stringify(message));
         },
-        disposeUseMessages: () => {
+        onBeforeDestroy: () => {
             wss.close();
         },
     };
