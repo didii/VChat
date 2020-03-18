@@ -23,12 +23,11 @@ import { ChatWindow, MessageEntry, Messages, Name } from '@/components';
 import { useStore, useMessages } from '@/topics';
 import { defineComponent } from '@vue/composition-api';
 
-export default defineComponent({
+@Component({
     components: {
-        ChatWindow,
         MessageEntry,
         Messages,
-        Name,
+        Name
     },
     setup() {
         const store = useStore();
@@ -39,5 +38,6 @@ export default defineComponent({
             }),
         };
     }
-});
+})
+export default class Chat extends Vue { }
 </script>
