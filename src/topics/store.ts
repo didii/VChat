@@ -4,7 +4,7 @@ import { ref } from '@vue/composition-api';
 export interface IState {
     userName: string;
     messages: IMessage[];
-    message: string;
+    input: string;
 }
 
 export interface IMessage {
@@ -18,7 +18,7 @@ export function useStore() {
     return {
         state: ref<IState>({
             userName: '',
-            message: '',
+            input: '',
             messages: [],
         }),
     }

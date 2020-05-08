@@ -1,14 +1,13 @@
 <template>
     <div data-component="messages" class="messages">
-        <message />
-        <message />
-        <message />
+        <message v-for="msg in messages" :key="msg.timeStamp" :message="msg" />
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Message } from '@/components';
+import { IMessage } from '../topics';
 
 @Component({
     components: {
@@ -16,6 +15,6 @@ import { Message } from '@/components';
     },
 })
 export default class Messages extends Vue {
-
+    @Prop() messages!: IMessage[];
 }
 </script>

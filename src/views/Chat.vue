@@ -7,10 +7,10 @@
             <div class="chat-main row">
                 <div class="card w-100">
                     <div class="card-body">
-                        <messages />
+                        <messages :messages="state.messages" />
                     </div>
                     <div class="card-footer">
-                        <message-entry />
+                        <message-entry :input="state.input" @submit="sendMessage" />
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@ import { ChatWindow, Connection, MessageEntry, Messages, Name } from '@/componen
 import { useStore, useMessages } from '@/topics';
 import { defineComponent } from '@vue/composition-api';
 
-@Component({
+export default defineComponent({
     components: {
         Connection,
         MessageEntry,
@@ -40,6 +40,5 @@ import { defineComponent } from '@vue/composition-api';
             }),
         };
     }
-})
-export default class Chat extends Vue { }
+});
 </script>

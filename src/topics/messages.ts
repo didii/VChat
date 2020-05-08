@@ -1,5 +1,6 @@
 import { IMessage } from '@/topics/store';
 import { onUnmounted, ref } from '@vue/composition-api';
+import { MessageType } from '@/models/message-type';
 
 export enum ConnectionState {
     Closed,
@@ -30,7 +31,13 @@ export function useMessages(onMessageReceived: (message: IMessage) => void) {
 
     return {
         connectionState,
-        sendMessage: (message: IMessage) => {
+        sendMessage: (message: string) => {
+            var send: IMessage = {
+                message: message,
+                timeStamp: new Date(),
+                type: MessageType.Other,
+                userName: 'Test user',
+            };
             wss.send(JSON.stringify(message));
         },
     };
